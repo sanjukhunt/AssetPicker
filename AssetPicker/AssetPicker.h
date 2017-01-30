@@ -83,6 +83,7 @@ typedef void (^APLoadHandler)(AssetPicker* picker);
 @property(nonatomic,strong)  UILabel* titleLbl;
 @property(nonatomic,strong)  UIButton* doneBtn;
 @property(nonatomic,strong)  UIButton* backBtn;
+@property(nonatomic,strong)  UICollectionView* availableAssetsClctnVw;
 
 /*
  * Class helper, only thing needed to push AssetPicker, 

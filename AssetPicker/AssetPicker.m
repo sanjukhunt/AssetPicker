@@ -409,8 +409,7 @@ typedef enum
     // Collection For Selected Assets
     NSMutableArray* selectedAssets;
     
-    // CollectionView - Grid
-    UICollectionView* availableAssetsClctnVw;
+   
     NSMutableDictionary* sectionHeaders;
     dispatch_queue_t assetInfoLoadQueue;
     
@@ -772,7 +771,7 @@ typedef enum
         cameraBtn.frame = CGRectMake((newWidth-(IsPad?90:(isPortrait?71:80))), (topBarHeight-30)/2, 30, 30);
         _doneBtn.frame = CGRectMake((newWidth-(IsPad?40:(isPortrait?34:40))), (topBarHeight-30)/2, 33, 30);
         
-        availableAssetsClctnVw.frame =
+        _availableAssetsClctnVw.frame =
         CGRectMake(0, ((navBarHeight>0)?0:topBarHeight+((iOSVersion>=7.0f)?StatusBarHeight:0)),
                    newWidth, (newHeight-topBarHeight-StatusBarHeight));
         
@@ -914,8 +913,8 @@ typedef enum
     layout.minimumInteritemSpacing = 0;
     layout.itemSize = CGSizeMake(size, size);
     layout.scrollDirection = UICollectionViewScrollDirectionVertical;
-    layout.headerReferenceSize = CGSizeMake(ScreenWidth, IsPad?35:25);
-    layout.footerReferenceSize = CGSizeZero;
+//    layout.headerReferenceSize = CGSizeMake(ScreenWidth, IsPad?35:25);
+//    layout.footerReferenceSize = CGSizeZero;
     layout.sectionInset = UIEdgeInsetsMake(padding, padding, padding, padding);
     
     CGFloat navBarHeight = NavBarHeightFor(self);
@@ -923,25 +922,25 @@ typedef enum
                                   ((iOSVersion>=7.0f)?StatusBarHeight:0)),
                               ScreenWidth, (ScreenHeight-_topBar.frame.size.height-StatusBarHeight-
                                (isContainedInTabBarController?TabBarHeight:0)));
-    availableAssetsClctnVw =
+    _availableAssetsClctnVw =
     [[UICollectionView alloc] initWithFrame:frame
                        collectionViewLayout:layout];
-    availableAssetsClctnVw.dataSource = self;
-    availableAssetsClctnVw.delegate = self;
-    availableAssetsClctnVw.allowsMultipleSelection = YES;
-    availableAssetsClctnVw.backgroundColor = UIColorWithRGBA(230, 230, 230, 1);
-    [self.view addSubview:availableAssetsClctnVw];
+    _availableAssetsClctnVw.dataSource = self;
+    _availableAssetsClctnVw.delegate = self;
+    _availableAssetsClctnVw.allowsMultipleSelection = YES;
+    _availableAssetsClctnVw.backgroundColor = UIColorWithRGBA(230, 230, 230, 1);
+    [self.view addSubview:_availableAssetsClctnVw];
     
-    [availableAssetsClctnVw registerClass:[APAvailableAssetsCollectionItem class]
+    [_availableAssetsClctnVw registerClass:[APAvailableAssetsCollectionItem class]
                forCellWithReuseIdentifier:AvailableAssetsCollectionItem];
     
-    [availableAssetsClctnVw registerClass:[UICollectionReusableView class]
-               forSupplementaryViewOfKind:UICollectionElementKindSectionHeader
-                      withReuseIdentifier:AvailableAssetsCollectionHeader];
+//    [_availableAssetsClctnVw registerClass:[UICollectionReusableView class]
+//               forSupplementaryViewOfKind:UICollectionElementKindSectionHeader
+//                      withReuseIdentifier:AvailableAssetsCollectionHeader];
     
     availableAssets = [self filteredAssets];
 
-    [availableAssetsClctnVw reloadData];
+    [_availableAssetsClctnVw reloadData];
     
     sectionHeaders = [@{} mutableCopy];
     assetInfoLoadQueue = dispatch_queue_create([AssetInfoLoadQueue UTF8String], NULL);
@@ -1056,11 +1055,11 @@ typedef enum
 
 -(void)reloadSectionHeadersAndAnyVisibleMatchingItemUsingIndexPath:(NSIndexPath*)indexPath
 {
-    [self reloadAllSectionHeaders];
+   // [self reloadAllSectionHeaders];
     
     ALAsset* targetAsset = availableAssets[indexPath.section][AlbumAssets][indexPath.row];
     
-    NSArray* visibleCellIndexPaths = [availableAssetsClctnVw indexPathsForVisibleItems];
+    NSArray* visibleCellIndexPaths = [_availableAssetsClctnVw indexPathsForVisibleItems];
     for(NSIndexPath* ip in visibleCellIndexPaths)
     {
         if(ip.section == indexPath.section && ip.item == indexPath.item)
@@ -1068,7 +1067,7 @@ typedef enum
         
         ALAsset* availableAsset = availableAssets[ip.section][AlbumAssets][ip.row];
         if([availableAsset isEqualToAsset:targetAsset])
-            [availableAssetsClctnVw reloadItemsAtIndexPaths:@[ip]];
+            [_availableAssetsClctnVw reloadItemsAtIndexPaths:@[ip]];
     }
 }
 
@@ -1102,8 +1101,8 @@ typedef enum
                  [availableAssets replaceObjectAtIndex:0 withObject:savedPhotosAlbum];
                  
                  NSIndexPath* indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
-                 [availableAssetsClctnVw insertItemsAtIndexPaths:@[indexPath]];
-                 [availableAssetsClctnVw scrollToItemAtIndexPath:indexPath
+                 [_availableAssetsClctnVw insertItemsAtIndexPaths:@[indexPath]];
+                 [_availableAssetsClctnVw scrollToItemAtIndexPath:indexPath
                                                 atScrollPosition:UICollectionViewScrollPositionTop
                                                         animated:YES];
                  
@@ -1111,13 +1110,13 @@ typedef enum
                  dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
                  dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
                      APAvailableAssetsCollectionItem* item = (APAvailableAssetsCollectionItem*)
-                     [availableAssetsClctnVw cellForItemAtIndexPath:indexPath];
+                     [_availableAssetsClctnVw cellForItemAtIndexPath:indexPath];
                      item.selected = YES;
                      [NotificationCenter postNotificationName:ItemTappedNotification object:item];
                  });
              }
              
-             [self reloadAllSectionHeaders];
+             //[self reloadAllSectionHeaders];
          }
      }
                   failureBlock:^(NSError* error)
@@ -1262,7 +1261,7 @@ typedef enum
     
     availableAssets = nil;
     availableAssets = [self filteredAssets];
-    [availableAssetsClctnVw reloadData];
+    [_availableAssetsClctnVw reloadData];
 }
 
 -(void)cameraBtnAction:(UIButton*)sender
@@ -1317,7 +1316,7 @@ typedef enum
     
     [clearViewForDisablingUI removeFromSuperview];
     [_topBar removeFromSuperview];
-    [availableAssetsClctnVw removeFromSuperview];
+    [_availableAssetsClctnVw removeFromSuperview];
     
     dispatch_async(dispatch_get_main_queue(), ^{
         [self writeAssetsAndPrepareURLs];
@@ -1892,6 +1891,7 @@ typedef enum
     return cell;
 }
 
+/*
 -(UICollectionReusableView*)collectionView:(UICollectionView*)collectionView
          viewForSupplementaryElementOfKind:(NSString*)kind
                                atIndexPath:(NSIndexPath*)indexPath
@@ -1925,6 +1925,7 @@ typedef enum
     
     return headerVw;
 }
+ */
 
 #pragma mark
 #pragma mark<UICollectionViewDelegate Methods>
@@ -1934,7 +1935,7 @@ typedef enum
 {
     
     APAvailableAssetsCollectionItem* item = (APAvailableAssetsCollectionItem*)notification.object;
-    NSIndexPath* indexPath = [availableAssetsClctnVw indexPathForCell:item];
+    NSIndexPath* indexPath = [_availableAssetsClctnVw indexPathForCell:item];
     NSInteger noOfItems = [availableAssets[indexPath.section][AlbumAssets] count]-1;
     ALAsset* asset = availableAssets[indexPath.section][AlbumAssets][noOfItems-indexPath.row];
     
