@@ -193,5 +193,5 @@ typedef void (^APLoadHandler)(AssetPicker* picker);
  * Following method clears all the local copies present.
  */
 +(void)clearLocalCopiesForAssets;
-
+-(void)backBtnAction:(UIButton*)sender;
 @end

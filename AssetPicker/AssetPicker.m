@@ -104,6 +104,7 @@ NSUInteger selectedVideosCount;
 
 NSUInteger maximumAssetsAllowed;
 NSUInteger selectedAssetsCount;
+APLoadHandler apLoaded;
 
 // Filter type
 typedef enum
@@ -190,13 +191,13 @@ typedef enum
                 NSString* assetsStr = (maximumAssetsAllowed != 1) ? @"Assets" : @"Asset";
                 message = [NSString stringWithFormat:
                            @"You can only select a maximum of %d %@ at a time.",
-                           maximumAssetsAllowed, assetsStr];
+                           (int)maximumAssetsAllowed, assetsStr];
             }
             else
             {
                 message = [NSString stringWithFormat:
                            @"You can only select a maximum of %d %@ & %d %@ at a time.",
-                           maximumPhotosAllowed, photoStr, maximumVideosAllowed, videoStr];
+                           (int)maximumPhotosAllowed, photoStr, (int)maximumVideosAllowed, videoStr];
             }
         }
         else if(selectedPhotosCount == maximumPhotosAllowed &&
@@ -205,7 +206,7 @@ typedef enum
         {
             message = [NSString stringWithFormat:
                        @"You can only select a maximum of %d %@ at a time.",
-                       maximumPhotosAllowed, photoStr];
+                       (int)maximumPhotosAllowed, photoStr];
         }
         else if(selectedVideosCount == maximumVideosAllowed &&
                 maximumAssetsAllowed == maximumVideosAllowed &&
@@ -213,13 +214,17 @@ typedef enum
         {
             message = [NSString stringWithFormat:
                        @"You can only select a maximum of %d %@ at a time.",
-                       maximumVideosAllowed, videoStr];
+                       (int)maximumVideosAllowed, videoStr];
         }
         
         if([message length] > 0)
         {
-            [[[UIAlertView alloc] initWithTitle:title message:message delegate:nil
-                              cancelButtonTitle:@"Okay" otherButtonTitles:nil] show];
+//            [[[UIAlertView alloc] initWithTitle:title message:message delegate:nil
+//                              cancelButtonTitle:@"Okay" otherButtonTitles:nil] show];
+            if(apLoaded != nil)
+            {
+                apLoaded(nil);
+            }
             
             return;
         }
@@ -400,7 +405,7 @@ typedef enum
     // Callbacks
     APCompletionHandler apCompletion;
     APCancelHandler apCancel;
-    APLoadHandler apLoaded;
+    
     
     // Stored / Available(Filtered) Assets from AssetsLibrary
     NSMutableArray* storedAssets;
@@ -829,8 +834,8 @@ typedef enum
     
     if(apLoaded != nil)
     {
+        self.accessibilityValue = nil;
         apLoaded(self);
-        apLoaded = nil;
     }
 }
 
@@ -1017,16 +1022,16 @@ typedef enum
         
         albumNameLbl.text = [NSString stringWithFormat:
                              @"%@ (%d) - (%d %@ + %d %@) Selected",
-                             albumInfo[AlbumName], [albumInfo[AlbumAssets] count],
-                             selectedPhotosCount, photosStr, selectedVideosCount, videosStr];
+                             albumInfo[AlbumName], (int)[albumInfo[AlbumAssets] count],
+                             (int)selectedPhotosCount, photosStr, (int)selectedVideosCount, videosStr];
     }
     else
     {
         NSString* itemsStr = ((selectedPhotosCount+selectedVideosCount) == 1) ? @"Item" : @"Items";
         albumNameLbl.text = [NSString stringWithFormat:
                              @"%@ (%d) - %d %@ Selected",
-                             albumInfo[AlbumName], [albumInfo[AlbumAssets] count],
-                             (selectedPhotosCount+selectedVideosCount), itemsStr];
+                             albumInfo[AlbumName], (int)[albumInfo[AlbumAssets] count],
+                             (int)(selectedPhotosCount+selectedVideosCount), itemsStr];
     }
 }
 
@@ -1877,9 +1882,9 @@ typedef enum
             NSInteger mins = (duration%3600)/60;
             NSInteger secs = (duration%3600)%60;
             if(hrs > 0)
-                durationLbl.text = [NSString stringWithFormat:@"%d:%02d:%02d",hrs,mins,secs];
+                durationLbl.text = [NSString stringWithFormat:@"%d:%02d:%02d",(int)hrs,(int)mins,(int)secs];
             else
-                durationLbl.text = [NSString stringWithFormat:@"%d:%02d",mins,secs];
+                durationLbl.text = [NSString stringWithFormat:@"%d:%02d",(int)mins,(int)secs];
         }
         else
         {
@@ -1943,7 +1948,7 @@ typedef enum
         [selectedAssets addAsset:asset];
     else
         [selectedAssets removeAsset:asset];
-    [_doneBtn setTitle:[NSString stringWithFormat:@"Done(%d)",selectedAssets.count] forState:UIControlStateNormal];
+    [_doneBtn setTitle:[NSString stringWithFormat:@"Done(%d)",(int)selectedAssets.count] forState:UIControlStateNormal];
     
     [self reloadSectionHeadersAndAnyVisibleMatchingItemUsingIndexPath:indexPath];
 }
