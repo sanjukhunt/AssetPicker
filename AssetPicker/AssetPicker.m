@@ -912,6 +912,7 @@ typedef enum
 {
     CGFloat size = IsPad?140:76;
     CGFloat padding = IsPad?10:5;
+    size = self.view.frame.size.width/(IsPad?8:4)-padding;
     
     UICollectionViewFlowLayout* layout = [UICollectionViewFlowLayout new];
     layout.minimumLineSpacing = IsPad?10:2;
@@ -1290,7 +1291,7 @@ typedef enum
         return;
     }
     
-    totalBytesToWrite = 0;
+   /* totalBytesToWrite = 0;
     totalBytesWritten = 0;
     for(ALAsset* asset in selectedAssets)
     {
@@ -1325,6 +1326,23 @@ typedef enum
     
     dispatch_async(dispatch_get_main_queue(), ^{
         [self writeAssetsAndPrepareURLs];
+    });*/
+    [clearViewForDisablingUI removeFromSuperview];
+    [_topBar removeFromSuperview];
+    [_availableAssetsClctnVw removeFromSuperview];
+    
+    double delayInSeconds = 0.5f;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [loadingShield removeFromSuperview];
+        [self.navigationController popViewControllerAnimated:YES];
+        [self removeTopBarNClearViewProvideNavigationBarOriginalAppearance];
+        
+        if(apCompletion != nil)
+        {
+            apCompletion(self,selectedAssets);
+            apCompletion = nil;
+        }
     });
 }
 
