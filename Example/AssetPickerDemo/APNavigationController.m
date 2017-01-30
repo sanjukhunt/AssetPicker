@@ -15,9 +15,4 @@
     return YES;
 }
 
--(NSUInteger)supportedInterfaceOrientations
-{
-    return UIInterfaceOrientationMaskAllButUpsideDown;
-}
-
 @end

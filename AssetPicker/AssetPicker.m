@@ -375,13 +375,7 @@ typedef enum
     UIView* clearViewForDisablingUI;
     
     // TopBar
-    UIView* topBar;
-    UIButton* backBtn;
-    UIButton* filterBtn;
-    UILabel* titleLbl;
-    UIButton* cameraBtn;
-    UIButton* doneBtn;
-    
+       
     /*
      * Remember what was the statusBarStyle & navigationBarColor
      * when AssetPicker launched
@@ -406,6 +400,7 @@ typedef enum
     // Callbacks
     APCompletionHandler apCompletion;
     APCancelHandler apCancel;
+    APLoadHandler apLoaded;
     
     // Stored / Available(Filtered) Assets from AssetsLibrary
     NSMutableArray* storedAssets;
@@ -455,17 +450,20 @@ typedef enum
 +(void)showAssetPickerIn:(UINavigationController*)navigationController
        completionHandler:(APCompletionHandler)completion
            cancelHandler:(APCancelHandler)cancel
+             loadHandler:(APLoadHandler)loaded
 {
     return [self showAssetPickerIn:navigationController
                    considersTabBar:NO
                  completionHandler:completion
-                     cancelHandler:cancel];
+                     cancelHandler:cancel
+                loadHandler:loaded];
 }
 
 +(void)showAssetPickerIn:(UINavigationController*)navigationController
          considersTabBar:(BOOL)isInTabBarController
        completionHandler:(APCompletionHandler)completion
            cancelHandler:(APCancelHandler)cancel
+             loadHandler:(APLoadHandler)loaded
 {
     return [self showAssetPickerIn:navigationController
               maximumAllowedPhotos:DefaultMaximumPhotos
@@ -473,19 +471,22 @@ typedef enum
               maximumAllowedAssets:DefaultMaximumAssets
                    considersTabBar:isInTabBarController
                  completionHandler:completion
-                     cancelHandler:cancel];
+                     cancelHandler:cancel
+                       loadHandler:loaded];
 }
 
 +(void)showAssetPickerIn:(UINavigationController*)navigationController
     maximumAllowedPhotos:(NSUInteger)photosCount
        completionHandler:(APCompletionHandler)completion
            cancelHandler:(APCancelHandler)cancel
+             loadHandler:(APLoadHandler)loaded
 {
     return [self showAssetPickerIn:navigationController
               maximumAllowedPhotos:photosCount
                    considersTabBar:NO
                  completionHandler:completion
-                     cancelHandler:cancel];
+                     cancelHandler:cancel
+                       loadHandler:loaded];
 }
 
 +(void)showAssetPickerIn:(UINavigationController*)navigationController
@@ -493,6 +494,7 @@ typedef enum
          considersTabBar:(BOOL)isInTabBarController
        completionHandler:(APCompletionHandler)completion
            cancelHandler:(APCancelHandler)cancel
+             loadHandler:(APLoadHandler)loaded
 {
     return [self showAssetPickerIn:navigationController
               maximumAllowedPhotos:photosCount
@@ -500,19 +502,22 @@ typedef enum
               maximumAllowedAssets:photosCount
                    considersTabBar:isInTabBarController
                  completionHandler:completion
-                     cancelHandler:cancel];
+                     cancelHandler:cancel
+                       loadHandler:loaded];
 }
 
 +(void)showAssetPickerIn:(UINavigationController*)navigationController
     maximumAllowedVideos:(NSUInteger)videosCount
        completionHandler:(APCompletionHandler)completion
            cancelHandler:(APCancelHandler)cancel
+             loadHandler:(APLoadHandler)loaded
 {
     return [self showAssetPickerIn:navigationController
               maximumAllowedVideos:videosCount
                    considersTabBar:NO
                  completionHandler:completion
-                     cancelHandler:cancel];
+                     cancelHandler:cancel
+                       loadHandler:loaded];
 }
 
 +(void)showAssetPickerIn:(UINavigationController*)navigationController
@@ -520,6 +525,7 @@ typedef enum
          considersTabBar:(BOOL)isInTabBarController
        completionHandler:(APCompletionHandler)completion
            cancelHandler:(APCancelHandler)cancel
+             loadHandler:(APLoadHandler)loaded
 {
     return [self showAssetPickerIn:navigationController
               maximumAllowedPhotos:0
@@ -527,7 +533,8 @@ typedef enum
               maximumAllowedAssets:videosCount
                    considersTabBar:isInTabBarController
                  completionHandler:completion
-                     cancelHandler:cancel];
+                     cancelHandler:cancel
+                       loadHandler:loaded];
 }
 
 +(void)showAssetPickerIn:(UINavigationController*)navigationController
@@ -535,13 +542,15 @@ typedef enum
     maximumAllowedVideos:(NSUInteger)videosCount
        completionHandler:(APCompletionHandler)completion
            cancelHandler:(APCancelHandler)cancel
+             loadHandler:(APLoadHandler)loaded
 {
     return [self showAssetPickerIn:navigationController
               maximumAllowedPhotos:photosCount
               maximumAllowedVideos:videosCount
                    considersTabBar:NO
                  completionHandler:completion
-                     cancelHandler:cancel];
+                     cancelHandler:cancel
+                       loadHandler:loaded];
 }
 
 +(void)showAssetPickerIn:(UINavigationController*)navigationController
@@ -550,6 +559,7 @@ typedef enum
          considersTabBar:(BOOL)isInTabBarController
        completionHandler:(APCompletionHandler)completion
            cancelHandler:(APCancelHandler)cancel
+             loadHandler:(APLoadHandler)loaded
 {
     return [self showAssetPickerIn:navigationController
               maximumAllowedPhotos:photosCount
@@ -557,18 +567,21 @@ typedef enum
               maximumAllowedAssets:photosCount+videosCount
                    considersTabBar:isInTabBarController
                  completionHandler:completion
-                     cancelHandler:cancel];
+                     cancelHandler:cancel
+                       loadHandler:loaded];
 }
 
 +(void)showAssetPickerIn:(UINavigationController*)navigationController
     maximumAllowedAssets:(NSUInteger)assetsCount
        completionHandler:(APCompletionHandler)completion
            cancelHandler:(APCancelHandler)cancel
+             loadHandler:(APLoadHandler)loaded
 {
     return [self showAssetPickerIn:navigationController
               maximumAllowedAssets:assetsCount
                  completionHandler:completion
-                     cancelHandler:cancel];
+                     cancelHandler:cancel
+                       loadHandler:loaded];
 }
 
 +(void)showAssetPickerIn:(UINavigationController*)navigationController
@@ -576,6 +589,7 @@ typedef enum
          considersTabBar:(BOOL)isInTabBarController
        completionHandler:(APCompletionHandler)completion
            cancelHandler:(APCancelHandler)cancel
+             loadHandler:(APLoadHandler)loaded
 {
     return [self showAssetPickerIn:navigationController
               maximumAllowedPhotos:0
@@ -583,7 +597,8 @@ typedef enum
               maximumAllowedAssets:assetsCount
                    considersTabBar:isInTabBarController
                  completionHandler:completion
-                     cancelHandler:cancel];
+                     cancelHandler:cancel
+                       loadHandler:loaded];
 }
 
 +(void)showAssetPickerIn:(UINavigationController*)navigationController
@@ -593,9 +608,11 @@ typedef enum
          considersTabBar:(BOOL)isInTabBarController
        completionHandler:(APCompletionHandler)completion
            cancelHandler:(APCancelHandler)cancel
+             loadHandler:(APLoadHandler)loaded
 {
     AssetPicker* picker = [[AssetPicker alloc] initWithCompletionHandler:completion
                                                            cancelHandler:cancel
+                                                             loadHandler:loaded
                                                          considersTabBar:isInTabBarController
                                                     maximumAllowedPhotos:photosCount
                                                     maximumAllowedVideos:videosCount
@@ -605,6 +622,7 @@ typedef enum
 
 -(id)initWithCompletionHandler:(APCompletionHandler)completion
                  cancelHandler:(APCancelHandler)cancel
+                 loadHandler:(APCancelHandler)load
                considersTabBar:(BOOL)isInTabBarController
           maximumAllowedPhotos:(NSUInteger)photosCount
           maximumAllowedVideos:(NSUInteger)videosCount
@@ -614,6 +632,7 @@ typedef enum
     {
         apCompletion = completion;
         apCancel = cancel;
+        apLoaded = load;
         isContainedInTabBarController = isInTabBarController;
         
         maximumPhotosAllowed = photosCount;
@@ -717,11 +736,6 @@ typedef enum
     return YES;
 }
 
--(NSUInteger)supportedInterfaceOrientations
-{
-    return UIInterfaceOrientationMaskAllButUpsideDown;
-}
-
 -(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
                                duration:(NSTimeInterval)duration
 {
@@ -747,16 +761,16 @@ typedef enum
             topBarHeight = 32;
         }
         
-        topBar.frame = CGRectMake(0, ((iOSVersion>=7.0f && navBarHeight==0)?StatusBarHeight:0),
+        _topBar.frame = CGRectMake(0, ((iOSVersion>=7.0f && navBarHeight==0)?StatusBarHeight:0),
                                   newWidth, topBarHeight);
         
         CGFloat titleLblWidth = (IsPad?400:(isPortrait?170:300));
         
-        backBtn.frame = CGRectMake((IsPad?3:0), (topBarHeight-30)/2, 36, 30);
+        _backBtn.frame = CGRectMake((IsPad?3:0), (topBarHeight-30)/2, 36, 30);
         filterBtn.frame = CGRectMake((IsPad?60:40), (topBarHeight-30)/2, 30, 30);
-        titleLbl.frame = CGRectMake((newWidth-titleLblWidth)/2, (topBarHeight-40)/2, titleLblWidth, 40);
+        _titleLbl.frame = CGRectMake((newWidth-titleLblWidth)/2, (topBarHeight-40)/2, titleLblWidth, 40);
         cameraBtn.frame = CGRectMake((newWidth-(IsPad?90:(isPortrait?71:80))), (topBarHeight-30)/2, 30, 30);
-        doneBtn.frame = CGRectMake((newWidth-(IsPad?40:(isPortrait?34:40))), (topBarHeight-30)/2, 33, 30);
+        _doneBtn.frame = CGRectMake((newWidth-(IsPad?40:(isPortrait?34:40))), (topBarHeight-30)/2, 33, 30);
         
         availableAssetsClctnVw.frame =
         CGRectMake(0, ((navBarHeight>0)?0:topBarHeight+((iOSVersion>=7.0f)?StatusBarHeight:0)),
@@ -785,17 +799,17 @@ typedef enum
     CGFloat navBarHeight = NavBarHeightFor(self);
     if(navBarHeight > 0 && navBarHeight < 44)
     {
-        topBar.frame = CGRectMake(0, (navBarHeight-44)/2, topBar.frame.size.width, navBarHeight);
+        _topBar.frame = CGRectMake(0, (navBarHeight-44)/2, _topBar.frame.size.width, navBarHeight);
     }
     else
     {
         CGFloat topBarHeight = IsPad?44:(IsPortrait?44:32);
-        topBar.frame = CGRectMake(0, (iOSVersion>=7.0f && navBarHeight==0)?StatusBarHeight:0,
-                                  topBar.frame.size.width, topBarHeight);
+        _topBar.frame = CGRectMake(0, (iOSVersion>=7.0f && navBarHeight==0)?StatusBarHeight:0,
+                                  _topBar.frame.size.width, topBarHeight);
         
         if(topBarHeight != 44)
         {
-            for(UIView* sbvw in topBar.subviews)
+            for(UIView* sbvw in _topBar.subviews)
             {
                 CGRect frame = sbvw.frame;
                 frame.origin.y = (topBarHeight-frame.size.height)/2;
@@ -805,14 +819,20 @@ typedef enum
     }
     
     if(navBarHeight > 0)
-        [self.navigationController.navigationBar addSubview:topBar];
+        [self.navigationController.navigationBar addSubview:_topBar];
     else
-        [self.view addSubview:topBar];
+        [self.view addSubview:_topBar];
     
-    topBar.alpha = 0.0f;
+    _topBar.alpha = 0.0f;
     [UIView animateWithDuration:0.25f animations:^{
-        topBar.alpha = 1.0f;
+        _topBar.alpha = 1.0f;
     }];
+    
+    if(apLoaded != nil)
+    {
+        apLoaded(self);
+        apLoaded = nil;
+    }
 }
 
 -(void)fetchAvailableAssets
@@ -844,10 +864,10 @@ typedef enum
                  {
                      [storedAssets insertObject:albumInfo atIndex:0];
                  }
-                 else
-                 {
-                     [storedAssets addObject:albumInfo];
-                 }
+//                 else
+//                 {
+//                     [storedAssets addObject:albumInfo];
+//                 }
              }
              
              if(group == nil || *stop)
@@ -899,9 +919,9 @@ typedef enum
     layout.sectionInset = UIEdgeInsetsMake(padding, padding, padding, padding);
     
     CGFloat navBarHeight = NavBarHeightFor(self);
-    CGRect frame = CGRectMake(0, ((navBarHeight>0)?0:topBar.frame.size.height+
+    CGRect frame = CGRectMake(0, ((navBarHeight>0)?0:_topBar.frame.size.height+
                                   ((iOSVersion>=7.0f)?StatusBarHeight:0)),
-                              ScreenWidth, (ScreenHeight-topBar.frame.size.height-StatusBarHeight-
+                              ScreenWidth, (ScreenHeight-_topBar.frame.size.height-StatusBarHeight-
                                (isContainedInTabBarController?TabBarHeight:0)));
     availableAssetsClctnVw =
     [[UICollectionView alloc] initWithFrame:frame
@@ -920,6 +940,7 @@ typedef enum
                       withReuseIdentifier:AvailableAssetsCollectionHeader];
     
     availableAssets = [self filteredAssets];
+
     [availableAssetsClctnVw reloadData];
     
     sectionHeaders = [@{} mutableCopy];
@@ -1108,8 +1129,8 @@ typedef enum
 
 -(void)removeTopBarNClearViewProvideNavigationBarOriginalAppearance
 {
-    [UIView animateWithDuration:0.25f animations:^{topBar.alpha = 0.0f;}
-                     completion:^(BOOL finished){[topBar removeFromSuperview];}];
+    [UIView animateWithDuration:0.25f animations:^{_topBar.alpha = 0.0f;}
+                     completion:^(BOOL finished){[_topBar removeFromSuperview];}];
     
     [clearViewForDisablingUI removeFromSuperview];
     
@@ -1137,65 +1158,68 @@ typedef enum
 
 -(void)prepareTopBar
 {
-    topBar = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 44)];
-    topBar.backgroundColor = ThemeNavBarColor;
+    _topBar = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 44)];
+    _topBar.backgroundColor = ThemeNavBarColor;
+    _topBar.backgroundColor = [UIColor redColor];
     
-    backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    backBtn.imageEdgeInsets = UIEdgeInsetsMake(4, 8, 4, 14);
-    backBtn.backgroundColor = [UIColor clearColor];
-    [backBtn setImage:Image(@"ap_back.png") forState:UIControlStateNormal];
-    [backBtn addTarget:self action:@selector(backBtnAction:)
+    _backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    _backBtn.backgroundColor = [UIColor clearColor];
+    //[backBtn setImage:Image(@"ap_back.png") forState:UIControlStateNormal];
+    [_backBtn setTitle:@"Cancel" forState:UIControlStateNormal];
+    [_backBtn.titleLabel setFont:FontWithSize(14.0f)];
+    [_backBtn addTarget:self action:@selector(backBtnAction:)
       forControlEvents:UIControlEventTouchUpInside];
     
-    filterBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [filterBtn setImage:Image(@"ap_photo.png") forState:UIControlStateNormal];
-    [filterBtn addTarget:self action:@selector(filterBtnAction:)
-        forControlEvents:UIControlEventTouchUpInside];
+//    filterBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+//    [filterBtn setImage:Image(@"ap_photo.png") forState:UIControlStateNormal];
+//    [filterBtn addTarget:self action:@selector(filterBtnAction:)
+//        forControlEvents:UIControlEventTouchUpInside];
     
-    titleLbl = [[UILabel alloc] init];
-    titleLbl.backgroundColor = [UIColor clearColor];
-    titleLbl.textAlignment = NSTextAlignmentCenter;
-    titleLbl.textColor = UIColorWithRGBA(38, 38, 38, 1);
-    titleLbl.font = FontWithSize(16.0f);
-    titleLbl.numberOfLines = 0;
+    _titleLbl = [[UILabel alloc] init];
+    _titleLbl.backgroundColor = [UIColor clearColor];
+    _titleLbl.textAlignment = NSTextAlignmentCenter;
+    _titleLbl.textColor = [UIColor whiteColor];
+    _titleLbl.font = FontWithSize(14.0f);
+    _titleLbl.numberOfLines = 0;
+    _titleLbl.text = @"Camera Roll";
     
-    cameraBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [cameraBtn setImage:Image(@"ap_camera.png") forState:UIControlStateNormal];
-    [cameraBtn addTarget:self action:@selector(cameraBtnAction:)
-        forControlEvents:UIControlEventTouchUpInside];
-    
-    doneBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [doneBtn setImage:Image(@"ap_done.png") forState:UIControlStateNormal];
-    [doneBtn setImageEdgeInsets:UIEdgeInsetsMake(4, 3, 2, 3)];
-    [doneBtn addTarget:self action:@selector(doneBtnAction:)
+//    cameraBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+//    [cameraBtn setImage:Image(@"ap_camera.png") forState:UIControlStateNormal];
+//    [cameraBtn addTarget:self action:@selector(cameraBtnAction:)
+//        forControlEvents:UIControlEventTouchUpInside];
+//    
+    _doneBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    //[doneBtn setImage:Image(@"ap_done.png") forState:UIControlStateNormal];
+    [_doneBtn setTitle:@"Done" forState:UIControlStateNormal];
+    [_doneBtn setImageEdgeInsets:UIEdgeInsetsMake(4, 3, 2, 3)];
+    [_doneBtn.titleLabel setFont:FontWithSize(14.0f)];
+    [_doneBtn addTarget:self action:@selector(doneBtnAction:)
       forControlEvents:UIControlEventTouchUpInside];
     
     CGFloat titleLblWidth = (IsPad?400:(IsPortrait?170:300));
     
-    backBtn.frame = CGRectMake((IsPad?3:0), 7, 36, 30);
-    filterBtn.frame = CGRectMake((IsPad?60:40), 7, 30, 30);
-    titleLbl.frame = CGRectMake((ScreenWidth-titleLblWidth)/2, 2, titleLblWidth, 40);
-    cameraBtn.frame = CGRectMake((ScreenWidth-(IsPad?90:(IsPortrait?71:80))), 7, 30, 30);
-    doneBtn.frame = CGRectMake((ScreenWidth-(IsPad?40:(IsPortrait?34:40))), 7, 33, 30);
+    _backBtn.frame = CGRectMake((IsPad?3:0), 7, 60, 30);
+    _titleLbl.frame = CGRectMake((ScreenWidth-titleLblWidth)/2, 7, titleLblWidth, 30);
+    _doneBtn.frame = CGRectMake((ScreenWidth-(IsPad?70:(IsPortrait?70:70))), 7, 70, 30);
     
-    [topBar addSubview:backBtn];
-    [topBar addSubview:filterBtn];
-    [topBar addSubview:titleLbl];
-    [topBar addSubview:cameraBtn];
-    [topBar addSubview:doneBtn];
+    [_topBar addSubview:_backBtn];
+   // [_topBar addSubview:filterBtn];
+    [_topBar addSubview:_titleLbl];
+   // [_topBar addSubview:cameraBtn];
+    [_topBar addSubview:_doneBtn];
     
-    if(maximumPhotosAllowed > 0 && maximumAssetsAllowed == maximumPhotosAllowed)
-    {
-        filterType = APFilterTypePhotos;
-        filterBtn.hidden = YES;
-    }
-    else if(maximumVideosAllowed > 0 && maximumAssetsAllowed == maximumVideosAllowed)
-    {
-        filterType = APFilterTypeVideos;
-        filterBtn.hidden = YES;
-    }
+//    if(maximumPhotosAllowed > 0 && maximumAssetsAllowed == maximumPhotosAllowed)
+//    {
+//        filterType = APFilterTypePhotos;
+//        filterBtn.hidden = YES;
+//    }
+//    else if(maximumVideosAllowed > 0 && maximumAssetsAllowed == maximumVideosAllowed)
+//    {
+//        filterType = APFilterTypeVideos;
+//        filterBtn.hidden = YES;
+//    }
     
-    titleLbl.text = @"Select Photos/Videos From Library";
+   // titleLbl.text = @"Select Photos/Videos From Library";
     
     [self addTopBar];
 }
@@ -1292,7 +1316,7 @@ typedef enum
     [self showLoading];
     
     [clearViewForDisablingUI removeFromSuperview];
-    [topBar removeFromSuperview];
+    [_topBar removeFromSuperview];
     [availableAssetsClctnVw removeFromSuperview];
     
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -1465,7 +1489,7 @@ typedef enum
 {
     if(cameraOptionsContainer == nil)
     {
-        CGFloat topBarHeight = topBar.frame.size.height;
+        CGFloat topBarHeight = _topBar.frame.size.height;
         CGFloat yOffset = StatusBarHeight+topBarHeight-9+(topBarHeight==32?6:0);
         
         cameraOptionsContainer =
@@ -1618,7 +1642,6 @@ typedef enum
                  targetLbl.text = [NSString stringWithFormat:@"Flash - %@",flashStr];
              }
                  break;
-                 
              case 4:
              {
                  NSString* modeStr = @"";
@@ -1810,8 +1833,8 @@ typedef enum
         [cell.contentView addSubview:imgVw];
         [cell.contentView addSubview:videoInfoVw];
     }
-    
-    ALAsset* asset = availableAssets[indexPath.section][AlbumAssets][indexPath.row];
+    NSInteger noOfItems = [availableAssets[indexPath.section][AlbumAssets] count]-1;
+    ALAsset* asset = availableAssets[indexPath.section][AlbumAssets][noOfItems-indexPath.row];
     if(asset != nil)
     {
         [cell setSelected:[selectedAssets containsAsset:asset]];
@@ -1909,14 +1932,17 @@ typedef enum
 
 -(void)collectionViewCellTapped:(NSNotification*)notification
 {
+    
     APAvailableAssetsCollectionItem* item = (APAvailableAssetsCollectionItem*)notification.object;
     NSIndexPath* indexPath = [availableAssetsClctnVw indexPathForCell:item];
-    ALAsset* asset = availableAssets[indexPath.section][AlbumAssets][indexPath.row];
+    NSInteger noOfItems = [availableAssets[indexPath.section][AlbumAssets] count]-1;
+    ALAsset* asset = availableAssets[indexPath.section][AlbumAssets][noOfItems-indexPath.row];
     
     if(item.selected)
         [selectedAssets addAsset:asset];
     else
         [selectedAssets removeAsset:asset];
+    [_doneBtn setTitle:[NSString stringWithFormat:@"Done(%d)",selectedAssets.count] forState:UIControlStateNormal];
     
     [self reloadSectionHeadersAndAnyVisibleMatchingItemUsingIndexPath:indexPath];
 }

@@ -34,20 +34,21 @@
 {
     [AssetPicker showAssetPickerIn:self.navigationController
               maximumAllowedPhotos:4
-              maximumAllowedVideos:4
                  completionHandler:^(AssetPicker* picker, NSArray* assets)
      {
          NSLog(@"Assets --> %@", assets);
-         
          // Do your stuff here
-         
          // All done with the resources, let's reclaim disk memory
          [AssetPicker clearLocalCopiesForAssets];
      }
                      cancelHandler:^(AssetPicker* picker)
      {
          NSLog(@"Cancelled.");
+     } loadHandler:^(AssetPicker *picker) {
+         NSLog(@"Loaded");
+         [picker.topBar setBackgroundColor:[UIColor blueColor]];
      }];
+    
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -62,11 +63,6 @@
 -(BOOL)shouldAutorotate
 {
     return YES;
-}
-
--(NSUInteger)supportedInterfaceOrientations
-{
-    return UIInterfaceOrientationMaskAllButUpsideDown;
 }
 
 -(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation

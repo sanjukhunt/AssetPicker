@@ -70,11 +70,19 @@ extern NSUInteger selectedAssetsCount;
 @class AssetPicker;
 typedef void (^APCompletionHandler)(AssetPicker* picker, NSArray* assets);
 typedef void (^APCancelHandler)(AssetPicker* picker);
+typedef void (^APLoadHandler)(AssetPicker* picker);
 
 @interface AssetPicker : UIViewController<UICollectionViewDataSource, UICollectionViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 {
+   
+    UIButton* filterBtn;
+    UIButton* cameraBtn;
     
 }
+@property(nonatomic,strong)  UIView* topBar;
+@property(nonatomic,strong)  UILabel* titleLbl;
+@property(nonatomic,strong)  UIButton* doneBtn;
+@property(nonatomic,strong)  UIButton* backBtn;
 
 /*
  * Class helper, only thing needed to push AssetPicker, 
@@ -85,7 +93,8 @@ typedef void (^APCancelHandler)(AssetPicker* picker);
  */
 +(void)showAssetPickerIn:(UINavigationController*)navigationController
        completionHandler:(APCompletionHandler)completion
-           cancelHandler:(APCancelHandler)cancel;
+           cancelHandler:(APCancelHandler)cancel
+             loadHandler:(APLoadHandler)loaded;
 
 /*
  * You want to push AssetPicker in a naviagtionController
@@ -96,7 +105,8 @@ typedef void (^APCancelHandler)(AssetPicker* picker);
 +(void)showAssetPickerIn:(UINavigationController*)navigationController
          considersTabBar:(BOOL)isInTabBarController
        completionHandler:(APCompletionHandler)completion
-           cancelHandler:(APCancelHandler)cancel;
+           cancelHandler:(APCancelHandler)cancel
+             loadHandler:(APLoadHandler)loaded;
 
 #pragma mark - PHOTOS only -
 /*
@@ -106,13 +116,15 @@ typedef void (^APCancelHandler)(AssetPicker* picker);
 +(void)showAssetPickerIn:(UINavigationController*)navigationController
     maximumAllowedPhotos:(NSUInteger)photosCount
        completionHandler:(APCompletionHandler)completion
-           cancelHandler:(APCancelHandler)cancel;
+           cancelHandler:(APCancelHandler)cancel
+             loadHandler:(APLoadHandler)loaded;
 
 +(void)showAssetPickerIn:(UINavigationController*)navigationController
     maximumAllowedPhotos:(NSUInteger)photosCount
          considersTabBar:(BOOL)isInTabBarController
        completionHandler:(APCompletionHandler)completion
-           cancelHandler:(APCancelHandler)cancel;
+           cancelHandler:(APCancelHandler)cancel
+             loadHandler:(APLoadHandler)loaded;
 
 #pragma mark - VIDEOS only -
 /*
@@ -122,13 +134,15 @@ typedef void (^APCancelHandler)(AssetPicker* picker);
 +(void)showAssetPickerIn:(UINavigationController*)navigationController
     maximumAllowedVideos:(NSUInteger)videosCount
        completionHandler:(APCompletionHandler)completion
-           cancelHandler:(APCancelHandler)cancel;
+           cancelHandler:(APCancelHandler)cancel
+             loadHandler:(APLoadHandler)loaded;
 
 +(void)showAssetPickerIn:(UINavigationController*)navigationController
     maximumAllowedVideos:(NSUInteger)videosCount
          considersTabBar:(BOOL)isInTabBarController
        completionHandler:(APCompletionHandler)completion
-           cancelHandler:(APCancelHandler)cancel;
+           cancelHandler:(APCancelHandler)cancel
+             loadHandler:(APLoadHandler)loaded;
 
 #pragma mark - PHOTOS+VIDEOS -
 /*
@@ -139,14 +153,16 @@ typedef void (^APCancelHandler)(AssetPicker* picker);
     maximumAllowedPhotos:(NSUInteger)photosCount
     maximumAllowedVideos:(NSUInteger)videosCount
        completionHandler:(APCompletionHandler)completion
-           cancelHandler:(APCancelHandler)cancel;
+           cancelHandler:(APCancelHandler)cancel
+             loadHandler:(APLoadHandler)loaded;
 
 +(void)showAssetPickerIn:(UINavigationController*)navigationController
     maximumAllowedPhotos:(NSUInteger)photosCount
     maximumAllowedVideos:(NSUInteger)videosCount
          considersTabBar:(BOOL)isInTabBarController
        completionHandler:(APCompletionHandler)completion
-           cancelHandler:(APCancelHandler)cancel;
+           cancelHandler:(APCancelHandler)cancel
+             loadHandler:(APLoadHandler)loaded;
 
 /*
  * Want to impose a maximumLimit on number of Assets(Photos+Videos), use this
@@ -155,13 +171,15 @@ typedef void (^APCancelHandler)(AssetPicker* picker);
 +(void)showAssetPickerIn:(UINavigationController*)navigationController
     maximumAllowedAssets:(NSUInteger)assetsCount
        completionHandler:(APCompletionHandler)completion
-           cancelHandler:(APCancelHandler)cancel;
+           cancelHandler:(APCancelHandler)cancel
+             loadHandler:(APLoadHandler)loaded;
 
 +(void)showAssetPickerIn:(UINavigationController*)navigationController
     maximumAllowedAssets:(NSUInteger)assetsCount
          considersTabBar:(BOOL)isInTabBarController
        completionHandler:(APCompletionHandler)completion
-           cancelHandler:(APCancelHandler)cancel;
+           cancelHandler:(APCancelHandler)cancel
+             loadHandler:(APLoadHandler)loaded;
 
 #pragma mark - Clear Local Copies For Assets -
 /*
