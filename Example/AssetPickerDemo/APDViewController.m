@@ -45,11 +45,11 @@
      {
          NSLog(@"Cancelled.");
      } loadHandler:^(AssetPicker *picker) {
-         
+        
          if (picker) {
              NSLog(@"Loaded");
              [picker.topBar setBackgroundColor:[UIColor blueColor]];
-            
+             picker.availableAssetsClctnVw.backgroundColor = [UIColor redColor];
          } else {
              [[[UIAlertView alloc] initWithTitle:@"Alert" message:@"Reached maximum allow limit." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil] show];
          }

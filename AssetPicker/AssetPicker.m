@@ -258,7 +258,7 @@ typedef enum
     UIImageView* imgVw = (UIImageView*)[self.contentView viewWithTag:11111];
     if(selected)
     {
-        imgVw.alpha = 0.5f;
+        imgVw.alpha = 0.8f;
         _selectedCheckIcon.hidden = NO;
     }
     else
@@ -401,6 +401,7 @@ typedef enum
     // Loading Activity
     UIView* loadingShield;
     UIImageView* loadingImgVw;
+    UIActivityIndicatorView *activityView;
     
     // Callbacks
     APCompletionHandler apCompletion;
@@ -934,7 +935,7 @@ typedef enum
     _availableAssetsClctnVw.dataSource = self;
     _availableAssetsClctnVw.delegate = self;
     _availableAssetsClctnVw.allowsMultipleSelection = YES;
-    _availableAssetsClctnVw.backgroundColor = UIColorWithRGBA(230, 230, 230, 1);
+    //_availableAssetsClctnVw.backgroundColor = UIColorWithRGBA(230, 230, 230, 1);
     [self.view addSubview:_availableAssetsClctnVw];
     
     [_availableAssetsClctnVw registerClass:[APAvailableAssetsCollectionItem class]
@@ -950,6 +951,11 @@ typedef enum
     
     sectionHeaders = [@{} mutableCopy];
     assetInfoLoadQueue = dispatch_queue_create([AssetInfoLoadQueue UTF8String], NULL);
+    if(apLoaded != nil)
+    {
+        self.accessibilityValue = nil;
+        apLoaded(self);
+    }
 }
 
 -(NSMutableArray*)filteredAssets
@@ -1473,6 +1479,12 @@ typedef enum
     loadingImgVw.image = Image(@"ap_loading.png");
     
     [loadingShield addSubview:loadingImgVw];
+    
+    activityView = [[UIActivityIndicatorView alloc]
+                    initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    activityView.center = self.view.center;
+    [activityView startAnimating];
+    [self.view addSubview:activityView];
 }
 
 -(void)showLoading
@@ -1500,6 +1512,8 @@ typedef enum
         [loadingImgVw.layer removeAllAnimations];
         [loadingShield performSelector:@selector(removeFromSuperview)
                             withObject:nil afterDelay:0.1];
+        [activityView stopAnimating];
+        [activityView removeFromSuperview];
     }
 }
 
